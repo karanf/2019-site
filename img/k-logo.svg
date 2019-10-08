@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128.3121 113.2913">
+<defs>
+<linearGradient id="myGradient" gradientTransform="rotate(1450)">
+	<stop offset="0%"  stop-color="#3c0d7a" />
+	<stop offset="29%"  stop-color="#44107a" />
+	<stop offset="67%"  stop-color="#ff1361" />
+	<stop offset="100%" stop-color="#fff800" />
+</linearGradient>
+</defs>
+<path d="M97.8368,113.2912c-3.8741,0.0163-7.6151-1.4128-10.4917-4.0079L41.5913,68.0053
+	c-3.8091-3.4365-8.7572-5.3386-13.8874-5.3386H0L71.9897,4.5322C75.6213,1.5996,80.1482,0,84.816,0h29.4528L49.2951,52.4688h5.1298
+	c4.256,0,8.3608,1.578,11.5208,4.4289l62.3664,56.2653L97.8368,113.2912z M44.1725,0H18.4516l-7.6768,26.3333h0.7883L44.1725,0z"  fill="url('#myGradient')" />
+</svg>
