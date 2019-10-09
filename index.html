@@ -7,6 +7,11 @@
     <title>Karan Fadnavis | UX Design and Development</title>
     <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+    <script src="js/index.js"></script>
 </head>
 <body>
     <header>
@@ -14,8 +19,134 @@
             <img src="img/k-logo.svg" alt="" class="site-logo">
         </div>
     </header>
-    <div id="about-me">
-        content goes here
+    <div id="about-me" class="content-area">
+        
     </div>
+    <div id="portfolio" class="content-area">
+
+    </div>
+    <div id="contact" class="content-area">
+
+    </div>
+
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth/window.innerHeight,
+            0.1,
+            1000
+        ) ;
+        var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+        renderer.setClearColor(0x000000, 0);
+        renderer.setSize(window.innerWidth,window.innerHeight);
+
+        document.body.appendChild(renderer.domElement);
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth,window.innerHeight);
+            camera.aspect = window.innerWidth/window.innerHeight;
+
+            camera.updateProjectMatrix();
+        });
+
+        const geometry = new THREE.InstancedBufferGeometry();
+
+        // positions
+        const positions = new THREE.BufferAttribute(new Float32Array(4 * 3), 3);
+        positions.setXYZ(0, -0.5, 0.5, 0.0);
+        positions.setXYZ(1, 0.5, 0.5, 0.0);
+        positions.setXYZ(2, -0.5, -0.5, 0.0);
+        positions.setXYZ(3, 0.5, -0.5, 0.0);
+        geometry.addAttribute('position', positions);
+
+        // uvs
+        const uvs = new THREE.BufferAttribute(new Float32Array(4 * 2), 2);
+        uvs.setXYZ(0, 0.0, 0.0);
+        uvs.setXYZ(1, 1.0, 0.0);
+        uvs.setXYZ(2, 0.0, 1.0);
+        uvs.setXYZ(3, 1.0, 1.0);
+        geometry.addAttribute('uv', uvs);
+
+        // index
+        geometry.setIndex(new THREE.BufferAttribute(new Uint16Array([ 0, 2, 1, 2, 3, 1 ]), 1));
+
+        const indices = new Uint16Array(this.numPoints);
+        const offsets = new Float32Array(this.numPoints * 3);
+        const angles = new Float32Array(this.numPoints);
+
+        for (let i = 0; i < this.numPoints; i++) {
+            offsets[i * 3 + 0] = i % this.width;
+            offsets[i * 3 + 1] = Math.floor(i / this.width);
+
+            indices[i] = i;
+
+            angles[i] = Math.random() * Math.PI;
+        }
+
+        geometry.addAttribute('pindex', new THREE.InstancedBufferAttribute(indices, 1, false));
+        geometry.addAttribute('offset', new THREE.InstancedBufferAttribute(offsets, 3, false));
+        geometry.addAttribute('angle', new THREE.InstancedBufferAttribute(angles, 1, false));
+
+        const uniforms = {
+            uTime: { value: 0 },
+            uRandom: { value: 1.0 },
+            uDepth: { value: 2.0 },
+            uSize: { value: 0.0 },
+            uTextureSize: { value: new THREE.Vector2(this.width, this.height) },
+            uTexture: { value: this.texture },
+            uTouch: { value: null }
+        };
+        
+        const material = new THREE.RawShaderMaterial({
+            uniforms,
+            vertexShader: glslify(require('../../../shaders/particle.vert')),
+            fragmentShader: glslify(require('../../../shaders/particle.frag')),
+            depthTest: false,
+            transparent: true
+        });
+
+        // particle.vert
+
+        void main() {
+            // displacement
+            vec3 displaced = offset;
+            // randomise
+            displaced.xy += vec2(random(pindex) - 0.5, random(offset.x + pindex) - 0.5) * uRandom;
+            float rndz = (random(pindex) + snoise_1_2(vec2(pindex * 0.1, uTime * 0.1)));
+            displaced.z += rndz * (random(pindex) * 2.0 * uDepth);
+
+            // particle size
+            float psize = (snoise_1_2(vec2(uTime, pindex) * 0.5) + 2.0);
+            psize *= max(grey, 0.2);
+            psize *= uSize;
+
+            // (...)
+        }
+
+        // particle.frag
+
+        void main() {
+            // pixel color
+            vec4 colA = texture2D(uTexture, puv);
+
+            // greyscale
+            float grey = colA.r  + colA.g + colA.b;
+            vec4 colB = vec4(grey, grey, grey, 1.0);
+
+            // circle
+            float border = 0.3;
+            float radius = 0.5;
+            float dist = radius - distance(uv, vec2(0.5));
+            float t = smoothstep(0.0, border, dist);
+
+            // final color
+            color = colB;
+            color.a = t;
+
+            // (...)
+        }
+
+        renderer.render(scene,camera);
+    </script>
 </body>
 </html>

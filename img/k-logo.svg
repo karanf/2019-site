@@ -4,9 +4,8 @@
 	 viewBox="0 0 128.3121 113.2913">
 <defs>
 <linearGradient id="myGradient" gradientTransform="rotate(1450)">
-	<stop offset="0%"  stop-color="#3c0d7a" />
-	<stop offset="29%"  stop-color="#44107a" />
-	<stop offset="67%"  stop-color="#ff1361" />
+	<stop offset="0%"  stop-color="#44107a" />
+	<stop offset="50%"  stop-color="#ff1361" />
 	<stop offset="100%" stop-color="#fff800" />
 </linearGradient>
 </defs>
