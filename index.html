@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
-    <script src="js/index.js"></script>
 </head>
 <body>
     <header>
@@ -20,6 +16,10 @@
         </div>
     </header>
     <div id="about-me" class="content-area">
+        <div class="container">
+            <h1>About Me</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eius adipisci amet quas rerum, eos quis aliquid aperiam. Tempora minima in, ut iusto ducimus rem aliquid qui consectetur at provident. <a href="">Check out some of my work</a> or <a href="">Get in touch</a></p>
+        </div>
         
     </div>
     <div id="portfolio" class="content-area">
@@ -29,124 +29,336 @@
 
     </div>
 
+    <script type="module">
+
+            import {
+                Polyline, Renderer, Transform, Geometry, Program, Mesh, Vec3, Vec2, Color,
+            } from 'https://cdn.jsdelivr.net/npm/ogl@0.0.25/dist/ogl.mjs';
+    
+            const vertex = `
+                attribute vec3 position;
+                attribute vec3 next;
+                attribute vec3 prev;
+                attribute vec2 uv;
+                attribute float side;
+    
+                uniform vec2 uResolution;
+                uniform float uDPR;
+                uniform float uThickness;
+    
+                vec4 getPosition() {
+                    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);
+                    vec2 nextScreen = next.xy * aspect;
+                    vec2 prevScreen = prev.xy * aspect;
+    
+                    vec2 tangent = normalize(nextScreen - prevScreen);
+                    vec2 normal = vec2(-tangent.y, tangent.x);
+                    normal /= aspect;
+                    normal *= 1.0 - pow(abs(uv.y - 0.5) * 1.9, 2.0);
+    
+                    float pixelWidth = 1.0 / (uResolution.y / uDPR);
+                    normal *= pixelWidth * uThickness;
+    
+                    // When the points are on top of each other, shrink the line to avoid artifacts.
+                    float dist = length(nextScreen - prevScreen);
+                    normal *= smoothstep(0.0, 0.02, dist);
+    
+                    vec4 current = vec4(position, 1);
+                    current.xy -= normal * side;
+                    return current;
+                }
+    
+                void main() {
+                    gl_Position = getPosition();
+                }
+            `;
+    
+            {
+                const renderer = new Renderer({dpr: 2, alpha: true});
+                const gl = renderer.gl;
+                document.body.appendChild(gl.canvas);
+                gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    
+                const scene = new Transform();
+    
+                const lines = [];
+    
+                function resize() {
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    
+                    // We call resize on the polylines to update their resolution uniforms
+                    lines.forEach(line => line.polyline.resize());
+                }
+                window.addEventListener('resize', resize, false);
+    
+    
+                // If you're interested in learning about drawing lines with geometry, 
+                // go through this detailed article by Matt DesLauriers 
+                // https://mattdesl.svbtle.com/drawing-lines-is-hard
+                // It's an excellent breakdown of the approaches and their pitfalls.
+    
+                // In this example, we're making screen-space polylines. Basically it
+                // involves creating a geometry of vertices along a path - with two vertices
+                // at each point. Then in the vertex shader, we push each pair apart to
+                // give the line some width.
+    
+                // Just a helper function to make the code neater
+                function random(a, b) {
+                    const alpha = Math.random();
+                    return a * (1.0 - alpha) + b * alpha;
+                }
+                
+                // We're going to make a number of different coloured lines for fun.
+                [
+                    '#44107a',
+                    '#ff003c',
+                    '#fbf500',
+                ].forEach((color, i) => {
+    
+                    // Store a few values for each lines' randomised spring movement
+                    const line = {
+                        spring: random(0.03, 0.06),
+                        friction: random(0.7, 0.95),
+                        mouseVelocity: new Vec3(),
+                        mouseOffset: new Vec3(random(-1, 1) * 0.01),
+                    };
+    
+                    // Create an array of Vec3s (eg [[0, 0, 0], ...])
+                    const count = 25;
+                    const points = line.points = [];
+                    for (let i = 0; i < count; i++) points.push(new Vec3());
+    
+                    line.polyline = new Polyline(gl, {
+                        points,
+                        vertex,
+                        uniforms: {
+                            uColor: {value: new Color(color)},
+                            uThickness: {value: random(30, 50)},
+                        },
+                    });
+    
+                    line.polyline.mesh.setParent(scene);
+    
+                    lines.push(line);
+                });
+    
+                // Call initial resize after creating the polylines
+                resize();
+    
+                // Add handlers to get mouse position
+                const mouse = new Vec3();
+                if ('ontouchstart' in window) {
+                    window.addEventListener('touchstart', updateMouse, false);
+                    window.addEventListener('touchmove', updateMouse, false);
+                } else {
+                    window.addEventListener('mousemove', updateMouse, false);
+                }
+    
+                function updateMouse(e) {
+                    if (e.changedTouches && e.changedTouches.length) {
+                        e.x = e.changedTouches[0].pageX;
+                        e.y = e.changedTouches[0].pageY;
+                    }
+                    if (e.x === undefined) {
+                        e.x = e.pageX;
+                        e.y = e.pageY;
+                    }
+    
+                    // Get mouse value in -1 to 1 range, with y flipped
+                    mouse.set(
+                        (e.x / gl.renderer.width) * 2 - 1,
+                        (e.y / gl.renderer.height) * -2 + 1,
+                        0
+                    );
+                }
+                
+                const tmp = new Vec3();
+    
+                requestAnimationFrame(update);
+                function update(t) {
+                    requestAnimationFrame(update);
+    
+                    lines.forEach(line => {
+                    
+                        // Update polyline input points
+                        for (let i = line.points.length - 1; i >= 0; i--) {
+                            if (!i) {
+    
+                                // For the first point, spring ease it to the mouse position
+                                tmp.copy(mouse).add(line.mouseOffset).sub(line.points[i]).multiply(line.spring);
+                                line.mouseVelocity.add(tmp).multiply(line.friction);
+                                line.points[i].add(line.mouseVelocity);
+                            } else {
+    
+                                // The rest of the points ease to the point in front of them, making a line
+                                line.points[i].lerp(line.points[i - 1], 0.9);
+                            }
+                        }
+                        line.polyline.updateGeometry();
+                    });
+    
+                    renderer.render({scene});
+                }
+            }
+    
+    </script>
+
     <script>
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth/window.innerHeight,
-            0.1,
-            1000
-        ) ;
-        var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-        renderer.setClearColor(0x000000, 0);
-        renderer.setSize(window.innerWidth,window.innerHeight);
 
-        document.body.appendChild(renderer.domElement);
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth,window.innerHeight);
-            camera.aspect = window.innerWidth/window.innerHeight;
+        var drawGrid = function() {
+            // Background grid
+            let canvas, ctx;
+            let particles, cols, rows, width, height, cw, ch;
+            let mouse, oldmouse, delta;
 
-            camera.updateProjectMatrix();
-        });
+            const init = () => {
+            canvas = document.createElement('canvas');
+            ctx = canvas.getContext('2d');
+            document.body.appendChild(canvas);
+            
+            window.addEventListener('mousemove', mousemove);
+            window.addEventListener('resize', resize);
+            resize();
+            
+            // mouse = { x: 0, y: 0 };
+            oldmouse = {x: 0, y: 0 };
+            delta = 0;
 
-        const geometry = new THREE.InstancedBufferGeometry();
+            var divisor;
 
-        // positions
-        const positions = new THREE.BufferAttribute(new Float32Array(4 * 3), 3);
-        positions.setXYZ(0, -0.5, 0.5, 0.0);
-        positions.setXYZ(1, 0.5, 0.5, 0.0);
-        positions.setXYZ(2, -0.5, -0.5, 0.0);
-        positions.setXYZ(3, 0.5, -0.5, 0.0);
-        geometry.addAttribute('position', positions);
+            var findDivisor = () => {
+                if (window.innerWidth <= 500 ) {
+                    divisor = 20;
+                } else if (window.innerWidth <= 1200 ) {
+                    divisor = 35;
+                } else {
+                    divisor = 60;
+                }
+            }
 
-        // uvs
-        const uvs = new THREE.BufferAttribute(new Float32Array(4 * 2), 2);
-        uvs.setXYZ(0, 0.0, 0.0);
-        uvs.setXYZ(1, 1.0, 0.0);
-        uvs.setXYZ(2, 0.0, 1.0);
-        uvs.setXYZ(3, 1.0, 1.0);
-        geometry.addAttribute('uv', uvs);
+            findDivisor();
+            
+            width = window.innerWidth;
+            height = window.innerHeight;
 
-        // index
-        geometry.setIndex(new THREE.BufferAttribute(new Uint16Array([ 0, 2, 1, 2, 3, 1 ]), 1));
 
-        const indices = new Uint16Array(this.numPoints);
-        const offsets = new Float32Array(this.numPoints * 3);
-        const angles = new Float32Array(this.numPoints);
+            rows = width / divisor;
+            cols = Math.round(rows / height * width );
+            cw = width / (cols - 1);
+            ch = height / (rows - 1);
+            
+            particles = [];
+            for (let i = 0; i < cols * rows; i++) {
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const ix = col * cw - width / 2;
+                const iy = row * ch - height / 2;
+                const x = ix;
+                const y = iy;
+                const vx = 0;
+                const vy = 0;
+                
+                particles.push({ col, row, x, y, ix, iy, vx, vy });
+            }
+            };
 
-        for (let i = 0; i < this.numPoints; i++) {
-            offsets[i * 3 + 0] = i % this.width;
-            offsets[i * 3 + 1] = Math.floor(i / this.width);
+            const animate = () => {
+            update();
+            draw();
+            requestAnimationFrame(animate);
+            };
 
-            indices[i] = i;
+            const update = () => {
+            if (!mouse) return;
+            
+            delta *= 0.9;
+            
+            let dx, dy, dd;
+            
+            particles.forEach((p, index) => {
+                dx = p.x - mouse.x;
+                dy = p.y - mouse.y;
+                dd = dx * dx + dy * dy;
+                
+                if (dd < 10000) {
+                p.vx += dx * 0.00002 * delta;
+                p.vy += dy * 0.00002 * delta;
+                }
+                
+                p.vx *= 0.9;
+                p.vy *= 0.9;
+                
+                dx = p.ix - p.x;
+                dy = p.iy - p.y;
+                dd = dx * dx + dy * dy;
+                
+                p.vx += dx * 0.01;
+                p.vy += dy * 0.01;
+                
+                p.x += p.vx;
+                p.y += p.vy;
+            });
+            };
 
-            angles[i] = Math.random() * Math.PI;
+            const draw = () => {
+            var grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            grd.addColorStop(0, "#3a3a49");
+            grd.addColorStop(1, "#030211");
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.save();
+            ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
+            ctx.fillStyle = '#ff1361';
+            
+            particles.forEach((p) => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 1.5);
+                ctx.fill();
+            });
+            
+            ctx.restore();
+            };
+
+            const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            };
+
+            const mousemove = (e) => {
+            if (!mouse) {
+                mouse = {};
+                mouse.x = e.clientX - canvas.width * 0.5;
+                mouse.y = e.clientY - canvas.height * 0.5;
+                return;
+            }
+            
+            oldmouse.x = mouse.x;
+            oldmouse.y = mouse.y;
+            
+            mouse.x = e.clientX - canvas.width * 0.5;
+            mouse.y = e.clientY - canvas.height * 0.5;
+            
+            let dx, dy, dd;
+            
+            dx = mouse.x - oldmouse.x;
+            dy = mouse.y - oldmouse.y;
+            dd = 20 * (dx * dx + dy * dy);
+            
+            delta += dd;
+            if (delta > 1200) delta = 1200;
+            };
+
+            init();
+            animate();
         }
-
-        geometry.addAttribute('pindex', new THREE.InstancedBufferAttribute(indices, 1, false));
-        geometry.addAttribute('offset', new THREE.InstancedBufferAttribute(offsets, 3, false));
-        geometry.addAttribute('angle', new THREE.InstancedBufferAttribute(angles, 1, false));
-
-        const uniforms = {
-            uTime: { value: 0 },
-            uRandom: { value: 1.0 },
-            uDepth: { value: 2.0 },
-            uSize: { value: 0.0 },
-            uTextureSize: { value: new THREE.Vector2(this.width, this.height) },
-            uTexture: { value: this.texture },
-            uTouch: { value: null }
-        };
         
-        const material = new THREE.RawShaderMaterial({
-            uniforms,
-            vertexShader: glslify(require('../../../shaders/particle.vert')),
-            fragmentShader: glslify(require('../../../shaders/particle.frag')),
-            depthTest: false,
-            transparent: true
+
+        drawGrid();
+        window.addEventListener('resize', function(){
+            setTimeout(drawGrid, 100);
         });
 
-        // particle.vert
-
-        void main() {
-            // displacement
-            vec3 displaced = offset;
-            // randomise
-            displaced.xy += vec2(random(pindex) - 0.5, random(offset.x + pindex) - 0.5) * uRandom;
-            float rndz = (random(pindex) + snoise_1_2(vec2(pindex * 0.1, uTime * 0.1)));
-            displaced.z += rndz * (random(pindex) * 2.0 * uDepth);
-
-            // particle size
-            float psize = (snoise_1_2(vec2(uTime, pindex) * 0.5) + 2.0);
-            psize *= max(grey, 0.2);
-            psize *= uSize;
-
-            // (...)
-        }
-
-        // particle.frag
-
-        void main() {
-            // pixel color
-            vec4 colA = texture2D(uTexture, puv);
-
-            // greyscale
-            float grey = colA.r  + colA.g + colA.b;
-            vec4 colB = vec4(grey, grey, grey, 1.0);
-
-            // circle
-            float border = 0.3;
-            float radius = 0.5;
-            float dist = radius - distance(uv, vec2(0.5));
-            float t = smoothstep(0.0, border, dist);
-
-            // final color
-            color = colB;
-            color.a = t;
-
-            // (...)
-        }
-
-        renderer.render(scene,camera);
     </script>
 </body>
 </html>

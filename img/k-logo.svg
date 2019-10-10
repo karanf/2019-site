@@ -3,10 +3,10 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 128.3121 113.2913">
 <defs>
-<linearGradient id="myGradient" gradientTransform="rotate(1450)">
-	<stop offset="0%"  stop-color="#44107a" />
-	<stop offset="50%"  stop-color="#ff1361" />
-	<stop offset="100%" stop-color="#fff800" />
+<linearGradient id="myGradient" gradientTransform="rotate(0)">
+	<stop offset="10%"  stop-color="#c651b3" />
+	<stop offset="50%"  stop-color="#ff003c" />
+	<stop offset="90%" stop-color="#fbf500" />
 </linearGradient>
 </defs>
 <path d="M97.8368,113.2912c-3.8741,0.0163-7.6151-1.4128-10.4917-4.0079L41.5913,68.0053
