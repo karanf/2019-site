@@ -152,6 +152,16 @@
 		"sC": 3,
 		"tS": 0
 		},
+	"\/js\/slider.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/js\/slider-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
 	"\/node_modules": {
 		"ft": 65536,
 		"oA": 2,
@@ -222,6 +232,19 @@
 		"ma": 0,
 		"oA": 1,
 		"oAP": "\/sass\/partials\/_mixins.css",
+		"oF": 0,
+		"oS": 0,
+		"uL": 1
+		},
+	"\/sass\/partials\/_slider.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "\/sass\/partials\/_slider.css",
 		"oF": 0,
 		"oS": 0,
 		"uL": 1
@@ -681,7 +704,7 @@
 			"active": 0
 			}
 		},
-	"babelPresetType": 193,
+	"babelPresetType": 225,
 	"babelRetainLines": 0,
 	"bowerAbbreviatedPath": "bower_components",
 	"bowerAutoCreateInfoFile": 1,

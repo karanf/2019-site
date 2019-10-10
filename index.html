@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.10.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.10.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-transition-group/4.3.0/react-transition-group.min.js"></script>
 </head>
 <body>
     <header>
@@ -18,16 +21,19 @@
     <div id="about-me" class="content-area">
         <div class="container">
             <h1>About Me</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eius adipisci amet quas rerum, eos quis aliquid aperiam. Tempora minima in, ut iusto ducimus rem aliquid qui consectetur at provident. <a href="">Check out some of my work</a> or <a href="">Get in touch</a></p>
+            <p><span class="selected">Hey! I'm Karan Fadnavis - a Designer based in Auckland, New Zealand. I experiment with UI, UX, Interaction, Product, Motion, Graphic, and Web Design. Feel free to <a href=""><nobr>check out my work &rArr;</nobr></a> or <a href=""><nobr>get in touch &rArr; </nobr></a></span></p>
         </div>
         
     </div>
+
+
     <div id="portfolio" class="content-area">
 
     </div>
     <div id="contact" class="content-area">
 
     </div>
+    
 
     <script type="module">
 
@@ -309,7 +315,7 @@
             
             ctx.save();
             ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
-            ctx.fillStyle = '#ff1361';
+            ctx.fillStyle = '#c61256';
             
             particles.forEach((p) => {
                 ctx.beginPath();
@@ -360,5 +366,208 @@
         });
 
     </script>
+    <script type="text/babel">
+        const slideData = [
+            {
+              index: 0,
+              headline: 'New Fashion Apparel',
+              button: 'Shop now',
+              src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/225363/fashion.jpg'
+            },
+            {
+              index: 1,
+              headline: 'In The Wilderness',
+              button: 'Book travel',
+              src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/225363/forest.jpg'
+            },
+            {
+              index: 2,
+              headline: 'For Your Current Mood',
+              button: 'Listen',
+              src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/225363/guitar.jpg'
+            },
+            {
+              index: 3,
+              headline: 'Focus On The Writing',
+              button: 'Get Focused',
+              src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/225363/typewriter.jpg'
+            }
+          ]
+          
+          
+          // =========================
+          // Slide
+          // =========================
+          
+          class Slide extends React.Component {
+            constructor(props) {
+              super(props)
+          
+              this.handleMouseMove = this.handleMouseMove.bind(this)
+              this.handleMouseLeave = this.handleMouseLeave.bind(this)
+              this.handleSlideClick = this.handleSlideClick.bind(this)
+              this.imageLoaded = this.imageLoaded.bind(this)
+              this.slide = React.createRef()
+            }
+            
+            handleMouseMove(event) {
+              const el = this.slide.current
+              const r = el.getBoundingClientRect()
+          
+              el.style.setProperty('--x', event.clientX - (r.left + Math.floor(r.width / 2)))
+              el.style.setProperty('--y', event.clientY - (r.top + Math.floor(r.height / 2)))
+            }
+            
+            handleMouseLeave(event) {    
+              this.slide.current.style.setProperty('--x', 0)
+              this.slide.current.style.setProperty('--y', 0)
+            }
+            
+            handleSlideClick(event) {
+              this.props.handleSlideClick(this.props.slide.index)
+            }
+            
+            imageLoaded(event) {
+              event.target.style.opacity = 1
+            }
+            
+            render() {
+              const { src, button, headline, index } = this.props.slide
+              const current = this.props.current
+              let classNames = 'slide'
+              
+              if (current === index) classNames += ' slide--current'
+              else if (current - 1 === index) classNames += ' slide--previous'
+              else if (current + 1 === index) classNames += ' slide--next'
+                  
+              return (
+                <li ref={this.slide}
+                  className={classNames} 
+                  onClick={this.handleSlideClick}
+                  onMouseMove={this.handleMouseMove}
+                  onMouseLeave={this.handleMouseLeave}
+                >
+                  <div className="slide__image-wrapper">
+                    <img 
+                      className="slide__image"
+                      alt={headline}
+                      src={src}
+                      onLoad={this.imageLoaded}
+                    />
+                  </div>
+                  
+                  <article className="slide__content">
+                    <h2 className="slide__headline">{headline}</h2>
+                    <button className="slide__action btn">{button}</button>
+                  </article>
+                </li>
+              )
+            }
+          }
+          
+          
+          // =========================
+          // Slider control
+          // =========================
+          
+          const SliderControl = ({ type, title, handleClick }) => {
+            return (
+              <button className={`btn btn--${type}`} title={title} onClick={handleClick}>
+                <svg className="icon" viewBox="0 0 24 24">
+                  <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                </svg>
+              </button>
+            )
+          }
+          
+          
+          // =========================
+          // Slider
+          // =========================
+          
+          class Slider extends React.Component {
+            constructor(props) {
+              super(props)
+              
+              this.state = { current: 0 }
+              this.handlePreviousClick = this.handlePreviousClick.bind(this)
+              this.handleNextClick = this.handleNextClick.bind(this)
+              this.handleSlideClick = this.handleSlideClick.bind(this)
+            }
+            
+            handlePreviousClick() {
+              const previous = this.state.current - 1
+                  
+              this.setState({ 
+                current: (previous < 0) 
+                  ? this.props.slides.length - 1
+                  : previous
+              })
+            }
+            
+            handleNextClick() {
+              const next = this.state.current + 1;
+              
+              this.setState({ 
+                current: (next === this.props.slides.length) 
+                  ? 0
+                  : next
+              })
+            }
+            
+            handleSlideClick(index) {
+              if (this.state.current !== index) {
+                this.setState({
+                  current: index
+                })
+              }
+            }
+          
+            render() {
+              const { current, direction } = this.state
+              const { slides, heading } = this.props 
+              const headingId = `slider-heading__${heading.replace(/\s+/g, '-').toLowerCase()}`
+              const wrapperTransform = {
+                'transform': `translateX(-${current * (100 / slides.length)}%)`
+              }
+              
+              console.log('rendered');
+              return (
+                <div className='slider' aria-labelledby={headingId}>
+                  <ul className="slider__wrapper" style={wrapperTransform}>
+                    <h3 id={headingId} class="visuallyhidden">{heading}</h3>
+                    
+                    {slides.map(slide => {
+                      return (
+                        <Slide
+                          key={slide.index}
+                          slide={slide}
+                          current={current}
+                          handleSlideClick={this.handleSlideClick}
+                        />
+                      )
+                    })}
+                  </ul>
+                  
+                  <div className="slider__controls">
+                    <SliderControl 
+                      type="previous"
+                      title="Go to previous slide"
+                      handleClick={this.handlePreviousClick}
+                    />
+                    
+                    <SliderControl 
+                      type="next"
+                      title="Go to next slide"
+                      handleClick={this.handleNextClick}
+                    />
+                  </div>
+                </div>
+              )
+            }
+          }       
+        
+        const domContainer = document.querySelector('#portfolio');
+        ReactDOM.render(<Slider heading="Portfolio Slider" slides={slideData} />, domContainer);</script>
 </body>
 </html>

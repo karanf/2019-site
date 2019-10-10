@@ -3,6 +3,8 @@
 h1, h2, h3, h4, h3, h6 {
     font-family: 'Notable', Helvetica, Arial, sans-serif;
     line-height: 1.2em;
+    margin-bottom: 0.2em;
+    margin-top: 0.75em;
 }
 
 h1 {
@@ -20,19 +22,34 @@ h1 {
 
 body {
     font-family: 'Roboto Slab', Helvetica, Arial, sans-serif;
-    color: $neon-hot-pink;
+    color: $neon-red;
     font-size: 2rem;
     line-height: 1.5em;
 }
 
+// .selected {
+//     background-color: $neon-green;
+//     color: black;
+
+//     a {
+//         color: $neon-green;
+//         background-color: black;
+//     }
+// }
+
 a {
-    color: black;
-    background: $neon-yellow;
-    padding: 0 10px 5px;;
+    color: $neon-yellow;
+    padding: 0 10px 5px;
+    background-image: linear-gradient(90deg, $neon-yellow 0%, $neon-red 100%);
+    background-repeat: no-repeat;
     text-decoration: none;
     transition: all 0.3s;
+    background-size: 100% 0.1em;
+    background-position: 0 100%;
 
     &:hover {
-        text-decoration: underline;
+        text-decoration: none;
+        background-size: 100% 100%;
+        color: black;
     }
 }
