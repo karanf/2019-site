@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Karan Fadnavis | UX Design and Development</title>
+    <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+    <script src="./js/swup.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <img src="img/k-logo.svg" alt="" class="site-logo">
+        </div>
+    </header>
+    <div class="page-container transition-fade" id="swup">
+      
+      <div id="portfolio" class="content-area">
+        <div class="container">
+            <h1 class="transition-expand">Portfolio</h1>
+          <div id="scene" class="portfolio-slider transition-slide-right">
+
+            <p><span class="selected">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti necessitatibus beatae, itaque ipsum vel modi. Quisquam aut delectus assumenda veniam ratione vel, fugit, officia, quam ipsum beatae perspiciatis provident odit?</span></p>
+            <p><a class="purple-link with-background" href="/index.html"><nobr>&lArr; Back to my homepage</nobr></a><span class="selected"> or </span><a class="purple-link with-background" href="/index.html"><nobr>Get in touch &rArr;</nobr></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script type="module">
+
+            import {
+                Polyline, Renderer, Transform, Geometry, Program, Mesh, Vec3, Vec2, Color,
+            } from 'https://cdn.jsdelivr.net/npm/ogl@0.0.25/dist/ogl.mjs';
+    
+            const vertex = `
+                attribute vec3 position;
+                attribute vec3 next;
+                attribute vec3 prev;
+                attribute vec2 uv;
+                attribute float side;
+    
+                uniform vec2 uResolution;
+                uniform float uDPR;
+                uniform float uThickness;
+    
+                vec4 getPosition() {
+                    vec2 aspect = vec2(uResolution.x / uResolution.y, 1);
+                    vec2 nextScreen = next.xy * aspect;
+                    vec2 prevScreen = prev.xy * aspect;
+    
+                    vec2 tangent = normalize(nextScreen - prevScreen);
+                    vec2 normal = vec2(-tangent.y, tangent.x);
+                    normal /= aspect;
+                    normal *= 1.0 - pow(abs(uv.y - 0.5) * 1.9, 2.0);
+    
+                    float pixelWidth = 1.0 / (uResolution.y / uDPR);
+                    normal *= pixelWidth * uThickness;
+    
+                    // When the points are on top of each other, shrink the line to avoid artifacts.
+                    float dist = length(nextScreen - prevScreen);
+                    normal *= smoothstep(0.0, 0.02, dist);
+    
+                    vec4 current = vec4(position, 1);
+                    current.xy -= normal * side;
+                    return current;
+                }
+    
+                void main() {
+                    gl_Position = getPosition();
+                }
+            `;
+    
+            {
+                const renderer = new Renderer({dpr: 2, alpha: true});
+                const gl = renderer.gl;
+                document.body.appendChild(gl.canvas);
+                gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    
+                const scene = new Transform();
+    
+                const lines = [];
+    
+                function resize() {
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    
+                    // We call resize on the polylines to update their resolution uniforms
+                    lines.forEach(line => line.polyline.resize());
+                }
+                window.addEventListener('resize', resize, false);
+    
+    
+                // If you're interested in learning about drawing lines with geometry, 
+                // go through this detailed article by Matt DesLauriers 
+                // https://mattdesl.svbtle.com/drawing-lines-is-hard
+                // It's an excellent breakdown of the approaches and their pitfalls.
+    
+                // In this example, we're making screen-space polylines. Basically it
+                // involves creating a geometry of vertices along a path - with two vertices
+                // at each point. Then in the vertex shader, we push each pair apart to
+                // give the line some width.
+    
+                // Just a helper function to make the code neater
+                function random(a, b) {
+                    const alpha = Math.random();
+                    return a * (1.0 - alpha) + b * alpha;
+                }
+                
+                // We're going to make a number of different coloured lines for fun.
+                [
+                    '#44107a',
+                    '#ff003c',
+                    '#fbf500',
+                ].forEach((color, i) => {
+    
+                    // Store a few values for each lines' randomised spring movement
+                    const line = {
+                        spring: random(0.03, 0.06),
+                        friction: random(0.7, 0.95),
+                        mouseVelocity: new Vec3(),
+                        mouseOffset: new Vec3(random(-1, 1) * 0.01),
+                    };
+    
+                    // Create an array of Vec3s (eg [[0, 0, 0], ...])
+                    const count = 25;
+                    const points = line.points = [];
+                    for (let i = 0; i < count; i++) points.push(new Vec3());
+    
+                    line.polyline = new Polyline(gl, {
+                        points,
+                        vertex,
+                        uniforms: {
+                            uColor: {value: new Color(color)},
+                            uThickness: {value: random(30, 50)},
+                        },
+                    });
+    
+                    line.polyline.mesh.setParent(scene);
+    
+                    lines.push(line);
+                });
+    
+                // Call initial resize after creating the polylines
+                resize();
+    
+                // Add handlers to get mouse position
+                const mouse = new Vec3();
+                if ('ontouchstart' in window) {
+                    window.addEventListener('touchstart', updateMouse, false);
+                    window.addEventListener('touchmove', updateMouse, false);
+                } else {
+                    window.addEventListener('mousemove', updateMouse, false);
+                }
+    
+                function updateMouse(e) {
+                    if (e.changedTouches && e.changedTouches.length) {
+                        e.x = e.changedTouches[0].pageX;
+                        e.y = e.changedTouches[0].pageY;
+                    }
+                    if (e.x === undefined) {
+                        e.x = e.pageX;
+                        e.y = e.pageY;
+                    }
+    
+                    // Get mouse value in -1 to 1 range, with y flipped
+                    mouse.set(
+                        (e.x / gl.renderer.width) * 2 - 1,
+                        (e.y / gl.renderer.height) * -2 + 1,
+                        0
+                    );
+                }
+                
+                const tmp = new Vec3();
+    
+                requestAnimationFrame(update);
+                function update(t) {
+                    requestAnimationFrame(update);
+    
+                    lines.forEach(line => {
+                    
+                        // Update polyline input points
+                        for (let i = line.points.length - 1; i >= 0; i--) {
+                            if (!i) {
+    
+                                // For the first point, spring ease it to the mouse position
+                                tmp.copy(mouse).add(line.mouseOffset).sub(line.points[i]).multiply(line.spring);
+                                line.mouseVelocity.add(tmp).multiply(line.friction);
+                                line.points[i].add(line.mouseVelocity);
+                            } else {
+    
+                                // The rest of the points ease to the point in front of them, making a line
+                                line.points[i].lerp(line.points[i - 1], 0.9);
+                            }
+                        }
+                        line.polyline.updateGeometry();
+                    });
+    
+                    renderer.render({scene});
+                }
+            }
+    
+    </script>
+
+    <script>
+
+        var drawGrid = function() {
+            // Background grid
+            let canvas, ctx;
+            let particles, cols, rows, width, height, cw, ch;
+            let mouse, oldmouse, delta;
+
+            const init = () => {
+            canvas = document.createElement('canvas');
+            ctx = canvas.getContext('2d');
+            document.body.appendChild(canvas);
+            
+            window.addEventListener('mousemove', mousemove);
+            window.addEventListener('resize', resize);
+            resize();
+            
+            // mouse = { x: 0, y: 0 };
+            oldmouse = {x: 0, y: 0 };
+            delta = 0;
+
+            var divisor;
+
+            var findDivisor = () => {
+                if (window.innerWidth <= 500 ) {
+                    divisor = 20;
+                } else if (window.innerWidth <= 1200 ) {
+                    divisor = 35;
+                } else {
+                    divisor = 60;
+                }
+            }
+
+            findDivisor();
+            
+            width = window.innerWidth;
+            height = window.innerHeight;
+
+
+            rows = width / divisor;
+            cols = Math.round(rows / height * width );
+            cw = width / (cols - 1);
+            ch = height / (rows - 1);
+            
+            particles = [];
+            for (let i = 0; i < cols * rows; i++) {
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const ix = col * cw - width / 2;
+                const iy = row * ch - height / 2;
+                const x = ix;
+                const y = iy;
+                const vx = 0;
+                const vy = 0;
+                
+                particles.push({ col, row, x, y, ix, iy, vx, vy });
+            }
+            };
+
+            const animate = () => {
+            update();
+            draw();
+            requestAnimationFrame(animate);
+            };
+
+            const update = () => {
+            if (!mouse) return;
+            
+            delta *= 0.9;
+            
+            let dx, dy, dd;
+            
+            particles.forEach((p, index) => {
+                dx = p.x - mouse.x;
+                dy = p.y - mouse.y;
+                dd = dx * dx + dy * dy;
+                
+                if (dd < 10000) {
+                p.vx += dx * 0.00002 * delta;
+                p.vy += dy * 0.00002 * delta;
+                }
+                
+                p.vx *= 0.9;
+                p.vy *= 0.9;
+                
+                dx = p.ix - p.x;
+                dy = p.iy - p.y;
+                dd = dx * dx + dy * dy;
+                
+                p.vx += dx * 0.01;
+                p.vy += dy * 0.01;
+                
+                p.x += p.vx;
+                p.y += p.vy;
+            });
+            };
+
+            const draw = () => {
+            var grd = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            grd.addColorStop(0, "#3a3a49");
+            grd.addColorStop(1, "#030211");
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.save();
+            ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
+            ctx.fillStyle = '#c61256';
+            
+            particles.forEach((p) => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 1.75, 0, Math.PI * 1.75);
+                ctx.fill();
+            });
+            
+            ctx.restore();
+            };
+
+            const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            };
+
+            const mousemove = (e) => {
+            if (!mouse) {
+                mouse = {};
+                mouse.x = e.clientX - canvas.width * 0.5;
+                mouse.y = e.clientY - canvas.height * 0.5;
+                return;
+            }
+            
+            oldmouse.x = mouse.x;
+            oldmouse.y = mouse.y;
+            
+            mouse.x = e.clientX - canvas.width * 0.5;
+            mouse.y = e.clientY - canvas.height * 0.5;
+            
+            let dx, dy, dd;
+            
+            dx = mouse.x - oldmouse.x;
+            dy = mouse.y - oldmouse.y;
+            dd = 20 * (dx * dx + dy * dy);
+            
+            delta += dd;
+            if (delta > 1200) delta = 1200;
+            };
+
+            init();
+            animate();
+        }
+        
+
+        drawGrid();
+        window.addEventListener('resize', function(){
+            setTimeout(drawGrid, 100);
+        });
+
+    </script>
+
+    <script>
+      const swup = new Swup();
+    </script>
+</body>
+</html>
