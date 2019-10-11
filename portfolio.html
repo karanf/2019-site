@@ -22,10 +22,22 @@
       <div id="portfolio" class="content-area">
         <div class="container">
             <h1 class="transition-expand">Portfolio</h1>
-          <div id="scene" class="portfolio-slider transition-slide-right">
-
-            <p><span class="selected">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti necessitatibus beatae, itaque ipsum vel modi. Quisquam aut delectus assumenda veniam ratione vel, fugit, officia, quam ipsum beatae perspiciatis provident odit?</span></p>
-            <p><a class="purple-link with-background" href="/index.html"><nobr>&lArr; Back to my homepage</nobr></a><span class="selected"> or </span><a class="purple-link with-background" href="/index.html"><nobr>Get in touch &rArr;</nobr></a></p>
+          <div class="portfolio-slider transition-slide-right">
+                <div class="card">
+                    <p class="text" data-depth="0.5">Project name 1</p>
+                    <div class="image-background"  data-depth="1"></div>
+                    <div class="violet" data-depth="1.5"></div>
+                    <div class="magenta" data-depth="2"></div>
+                </div>
+                <div class="card">
+                    <p class="text" data-depth="0.5">Project name 2</p>
+                    <div class="image-background" data-depth="1"></div>
+                    <div class="violet" data-depth="1.5"></div>
+                    <div class="magenta" data-depth="2"></div>
+                </div>
+          </div>
+          <div class="transition-slide-right">
+              <p><a class="purple-link with-background" href="/index.html"><nobr>&lArr; Back to my homepage</nobr></a><span class="selected"> or </span><a class="purple-link with-background" href="/index.html"><nobr>Get in touch &rArr;</nobr></a></p>
           </div>
         </div>
       </div>
@@ -365,6 +377,14 @@
 
     <script>
       const swup = new Swup();
+
+      swup.on('contentReplaced', function(){
+        var sceneElements = document.querySelectorAll('.card');
+          var parallaxScenes = [];
+          for (var i = 0; i < sceneElements.length; i++) {
+              parallaxScenes.push(new Parallax(sceneElements[i]))
+          };
+      });
     </script>
 </body>
 </html>

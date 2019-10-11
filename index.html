@@ -362,6 +362,14 @@
 
     <script>
       const swup = new Swup();
+
+      swup.on('contentReplaced', function(){
+        var sceneElements = document.querySelectorAll('.card');
+          var parallaxScenes = [];
+          for (var i = 0; i < sceneElements.length; i++) {
+              parallaxScenes.push(new Parallax(sceneElements[i]))
+          };
+      });
     </script>
 </body>
 </html>

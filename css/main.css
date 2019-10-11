@@ -136,6 +136,41 @@ a {
     background-size: 100% 104%;
     color: #61f330; }
 
+.card {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  display: inline-block;
+  margin: 0 3rem;
+  z-index: 5; }
+  .card .text {
+    color: white;
+    padding: 20px;
+    z-index: 6; }
+  .card .image-background {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 10px solid #fbf500;
+    z-index: 5;
+    width: 250px;
+    height: 250px; }
+  .card .violet {
+    width: 250px;
+    height: 250px;
+    background-color: #44107a;
+    z-index: 4; }
+  .card .magenta {
+    width: 250px;
+    height: 250px;
+    background-color: #c61256;
+    z-index: 3; }
+  .card .yellow {
+    width: 250px;
+    height: 250px;
+    background-color: #c61256;
+    z-index: 5; }
+
 .transition-fade {
   -webkit-transition: 0.5s cubic-bezier(0.7, 1.1, 0.75, 1);
   transition: 0.5s cubic-bezier(0.7, 1.1, 0.75, 1);
