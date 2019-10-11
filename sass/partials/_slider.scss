@@ -1,4 +1,15 @@
+.portfolio-slider {
+  margin-left: -25vw;
+  margin-right: -25vw;
+  overflow-x: hidden;
+  padding: 50px 0;
 
+  .portfolio-padding {
+    width: 15%;
+    height: 100%;
+    display: inline-block;
+  } 
+}
 .card {
   position: relative;
   width: 250px;
@@ -37,12 +48,5 @@
     height: 250px;
     background-color: $neon-magenta;
     z-index: 3;
-  }
-
-  .yellow {
-    width: 250px;
-    height: 250px;
-    background-color: $neon-magenta;
-    z-index: 5;
   }
 }

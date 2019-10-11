@@ -136,6 +136,16 @@ a {
     background-size: 100% 104%;
     color: #61f330; }
 
+.portfolio-slider {
+  margin-left: -25vw;
+  margin-right: -25vw;
+  overflow-x: hidden;
+  padding: 50px 0; }
+  .portfolio-slider .portfolio-padding {
+    width: 15%;
+    height: 100%;
+    display: inline-block; }
+
 .card {
   position: relative;
   width: 250px;
@@ -165,11 +175,6 @@ a {
     height: 250px;
     background-color: #c61256;
     z-index: 3; }
-  .card .yellow {
-    width: 250px;
-    height: 250px;
-    background-color: #c61256;
-    z-index: 5; }
 
 .transition-fade {
   -webkit-transition: 0.5s cubic-bezier(0.7, 1.1, 0.75, 1);

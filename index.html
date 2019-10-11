@@ -20,9 +20,18 @@
     <div class="page-container" id="swup" class="transition-fade">
       <div id="about-me" class="content-area">
           <div class="container">
-              <h1 class="transition-expand">About Me</h1>
-              <p class="transition-slide-right"><span class="selected">Hey! I'm Karan Fadnavis - a Designer based in Auckland, New Zealand. I experiment with UI, UX, Interaction, Product, Motion, Graphic, and Web Design.</span></p>
-              <p class="transition-slide-right"><span class="selected">Feel free to</span><a class="purple-link with-background" href="/portfolio.html"><nobr>check my work out &rArr;</nobr></a><span class="selected"> or </span><a class="purple-link with-background" href=""><nobr>get in touch &rArr; </nobr></a></p>
+              <div class="parallax-container">
+                <div class="parallax-element" data-depth="0.2">
+                  <h1 class="transition-expand">About Me</h1>
+                </div>
+              </div>
+              <div class="parallax-container" data-pointer-events="true">
+                <div class="parallax-element" data-depth="0.5">
+                  <p class="transition-slide-right"><span class="selected">Hey! I'm Karan Fadnavis - a Designer based in Auckland, New Zealand. I experiment with UI, UX, Interaction, Product, Motion, Graphic, and Web Design.</span></p>
+                  <p class="transition-slide-right"><span class="selected">Feel free to</span><a class="purple-link with-background" href="/portfolio.html"><nobr>check my work out &rArr;</nobr></a><span class="selected"> or </span><a class="purple-link with-background" href=""><nobr>get in touch &rArr; </nobr></a></p>
+                </div>
+              </div>
+              
           </div>
           
       </div>
@@ -361,15 +370,21 @@
     </script>
 
     <script>
-      const swup = new Swup();
+        const swup = new Swup();
 
-      swup.on('contentReplaced', function(){
-        var sceneElements = document.querySelectorAll('.card');
+        var parallaxInit = function(){
+          var sceneElements = document.querySelectorAll('.parallax-container');
           var parallaxScenes = [];
           for (var i = 0; i < sceneElements.length; i++) {
               parallaxScenes.push(new Parallax(sceneElements[i]))
           };
-      });
+        };
+  
+        parallaxInit();
+  
+        swup.on('contentReplaced', function(){
+          parallaxInit();
+        });
     </script>
 </body>
 </html>
