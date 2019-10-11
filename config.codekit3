@@ -150,7 +150,7 @@
 		"oAP": "\/js\/index-min.js",
 		"oF": 0,
 		"sC": 3,
-		"tS": 0
+		"tS": 1
 		},
 	"\/js\/slider.js": {
 		"ft": 64,
@@ -158,6 +158,46 @@
 		"mi": 1,
 		"oA": 0,
 		"oAP": "\/js\/slider-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/js\/swup.min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/js\/swup.min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/js\/vue-mouse-parallax.common.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/js\/vue-mouse-parallax.common-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/js\/vue-mouse-parallax.umd.min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/js\/vue-mouse-parallax.umd.min-min.js",
+		"oF": 0,
+		"sC": 3,
+		"tS": 0
+		},
+	"\/js\/vue.min.js": {
+		"ft": 64,
+		"ma": 0,
+		"mi": 1,
+		"oA": 0,
+		"oAP": "\/js\/vue.min-min.js",
 		"oF": 0,
 		"sC": 3,
 		"tS": 0
@@ -183,6 +223,13 @@
 		"oF": 0,
 		"oO": 0,
 		"oS": 1
+		},
+	"\/portfolio.html": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/portfolio.html",
+		"oF": 0
 		},
 	"\/sass\/main.scss": {
 		"aP": 1,
@@ -245,6 +292,19 @@
 		"ma": 0,
 		"oA": 1,
 		"oAP": "\/sass\/partials\/_slider.css",
+		"oF": 0,
+		"oS": 0,
+		"uL": 1
+		},
+	"\/sass\/partials\/_transitions.scss": {
+		"aP": 0,
+		"bl": 0,
+		"dP": 10,
+		"dS": 0,
+		"ft": 4,
+		"ma": 0,
+		"oA": 1,
+		"oAP": "\/sass\/partials\/_transitions.css",
 		"oF": 0,
 		"oS": 0,
 		"uL": 1
