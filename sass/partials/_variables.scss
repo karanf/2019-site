@@ -1,7 +1,7 @@
 // Colours
 $neon-yellow: #fbf500;
 $neon-red: #ff003c;
-$neon-pink:  #c651b3;
+$neon-pink: #c651b3;
 $neon-purple: #9833f5;
 $neon-violet: #44107a;
 $neon-hot-pink: #ff1361;
@@ -11,3 +11,8 @@ $neon-magenta: #c61256;
 $neon-blue: #54ffe5;
 $gradient-dark: #030211;
 $gradient-light: #3a3a49;
+
+// Bezier Curves
+$ease-back-snappy: cubic-bezier(0.82, -0.17, 0.37, 1.33);
+$ease-back: cubic-bezier(0.45, -0.5, 0.5, 1.8);
+$ease-in-out: cubic-bezier(0.5, 0, 0.5, 1);
