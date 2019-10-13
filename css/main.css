@@ -69,8 +69,13 @@ header {
     width: 75px;
     height: auto; }
 
-h1, h2, h3, h4, h3, h6 {
-  font-family: 'Kelly Slab', Helvetica, Arial, sans-serif;
+h1,
+h2,
+h3,
+h4,
+h3,
+h6 {
+  font-family: "Kelly Slab", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
   line-height: 1.2em;
   margin-bottom: 0.2em;
@@ -84,12 +89,21 @@ h1 {
   transition: all 0.3s ease-out;
   z-index: 10;
   display: inline-block; }
+  @media (max-width: calc($large-desktop - 1px)) {
+    h1 {
+      font-size: 3rem; } }
+  @media (max-width: calc($desktop - 1px)) {
+    h1 {
+      font-size: 2.5rem; } }
+  @media (max-width: calc($small-desktop - 1px)) {
+    h1 {
+      font-size: 2rem; } }
 
 body {
-  font-family: 'Roboto Slab', Helvetica, Arial, sans-serif;
+  font-family: "Roboto Slab", Helvetica, Arial, sans-serif;
   color: black;
   font-size: 2rem;
-  line-height: 1.5em; }
+  line-height: 1.65em; }
 
 p {
   box-decoration-break: clone;

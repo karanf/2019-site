@@ -16,3 +16,16 @@ $gradient-light: #3a3a49;
 $ease-back-snappy: cubic-bezier(0.82, -0.17, 0.37, 1.33);
 $ease-back: cubic-bezier(0.45, -0.5, 0.5, 1.8);
 $ease-in-out: cubic-bezier(0.5, 0, 0.5, 1);
+
+// Breakpoints
+$tablet: 768px;
+$small-desktop: 960px;
+$desktop: 1200px;
+$large-desktop: 1920px;
+$xl-desktop: 2048px;
+
+$phone-max: calc($tablet - 1px);
+$tablet-max: calc($small-desktop - 1px);
+$small-desktop-max: calc($desktop - 1px);
+$desktop-max: calc($large-desktop - 1px);
+$large-desktop-max: calc($xl-desktop - 1px);
