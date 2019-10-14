@@ -18,92 +18,37 @@
         </div>
     </header>
     <div class="page-container transition-fade" id="swup">
-      
-      <div id="portfolio" class="content-area">
-        <div class="container">
-            <div class="parallax-container" data-pointer-events="true">
+      <div id="contact-me" class="content-area">
+          <div class="container">
+              <div class="parallax-container">
                 <div class="section-header parallax-element" data-depth="0.2">
-                    <h1 class="transition-expand"><span>Portfolio</span></h1>
-                    <div class="slider-arrows"><div class="left-arrow">&lAarr;</div>&nbsp;&nbsp;&nbsp;<div class="right-arrow">&rAarr;</div></div>
+                  <h1 class="transition-expand"><span>Contact Me</span></h1>
                 </div>
-            </div>
-            <div class="portfolio-slider transition-slide-right">
-                <div class="portfolio-padding"></div>
-                <a href="/projects/1.html">
-                    <div class="card parallax-container" data-pointer-events="true">
-                        <div class="image-background" data-depth="1"></div>
-                        <div class="violet" data-depth="1.4"></div>
-                        <div class="magenta" data-depth="2"></div>
-                    </div>    
-                </a>
-                <a href="#2">
-                    <div class="card parallax-container" data-pointer-events="true">
-                        <div class="image-background" data-depth="1"></div>
-                        <div class="violet" data-depth="1.4"></div>
-                        <div class="magenta" data-depth="2"></div>
-                    </div>    
-                </a>
-                <a href="#3">
-                    <div class="card parallax-container" data-pointer-events="true">
-                        <div class="image-background" data-depth="1"></div>
-                        <div class="violet" data-depth="1.4"></div>
-                        <div class="magenta" data-depth="2"></div>
-                    </div>    
-                </a>
-                <a href="#4">
-                    <div class="card parallax-container" data-pointer-events="true">
-                        <div class="image-background" data-depth="1"></div>
-                        <div class="violet" data-depth="1.4"></div>
-                        <div class="magenta" data-depth="2"></div>
-                    </div>    
-                </a>
-                <a href="#5">
-                    <div class="card parallax-container" data-pointer-events="true">
-                        <div class="image-background" data-depth="1"></div>
-                        <div class="violet" data-depth="1.4"></div>
-                        <div class="magenta" data-depth="2"></div>
-                    </div>    
-                </a>
-                <a href="#6">
-                    <div class="card parallax-container" data-pointer-events="true">
-                        <div class="image-background" data-depth="1"></div>
-                        <div class="violet" data-depth="1.4"></div>
-                        <div class="magenta" data-depth="2"></div>
-                    </div>    
-                </a>
-                <a href="#7">
-                    <div class="card parallax-container" data-pointer-events="true">
-                        <div class="image-background" data-depth="1"></div>
-                        <div class="violet" data-depth="1.4"></div>
-                        <div class="magenta" data-depth="2"></div>
-                    </div>    
-                </a>
-                <a href="#8">
-                    <div class="card parallax-container" data-pointer-events="true">
-                        <div class="image-background" data-depth="1"></div>
-                        <div class="violet" data-depth="1.4"></div>
-                        <div class="magenta" data-depth="2"></div>
-                    </div>    
-                </a>
-                <div class="portfolio-padding"></div>
-            </div>
-          <div class="transition-slide-right">
-              <div class="parallax-container" data-pointer-events="true">
-                  <div class="parallax-element" data-depth="0.1">
-                      <p><a class="purple-link with-background" href="/index.html"><nobr>&lArr; Homepage</nobr></a><span class="selected"> / </span><a class="purple-link with-background" href="/contact.html"><nobr>Contact me &rArr;</nobr></a></p>
-                  </div>
-                  
               </div>
+              <div class="parallax-container" data-pointer-events="true">
+                <div class="parallax-element" data-depth="0.5">
+                    <div class="transition-slide-right">
+                        <form>
+                            <span class="selected">
+
+                                Hi Karan, this is <input id="name" type="text" placeholder="name"></input>. I am interested in your <select><option value="UI / UX">UI / UX Design</option><option value="Web Design">Web Design</option><option value="Frontend">Frontend Dev</option></select> services. Please contact me on my email:<input type="email" placeholder="email address"></input>, or call me on:<input type="text" placeholder="phone number"></input>.
+                            </span>
+                        </form>
+                    </div>
+                  <p class="transition-slide-right"><span class="selected">Feel free to</span><a class="purple-link with-background" href="/portfolio.html"><nobr>check my work out &rArr;</nobr></a><span class="selected"> or </span><a class="purple-link with-background" href=""><nobr>get in touch &rArr; </nobr></a></p>
+                </div>
+              </div>
+              
           </div>
-        </div>
+          
       </div>
     </div>
     
     <script type="module">
-        var mobileDevice;
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-            mobileDevice = true;
-        }
+            var mobileDevice;
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                mobileDevice = true;
+            }
 
             import {
                 Polyline, Renderer, Transform, Geometry, Program, Mesh, Vec3, Vec2, Color,
@@ -274,6 +219,7 @@
                     if (!mobileDevice) {
                         renderer.render({scene});
                     }
+                    
                 }
             }
     
@@ -451,44 +397,41 @@
       };
 
       const scrollStuff = () => {
-            var leftArrow = $('.left-arrow');
-            var rightArrow = $('.right-arrow');
+        var leftArrow = $('.left-arrow');
+        var rightArrow = $('.right-arrow');
 
-            console.log($('.card').outerWidth(true) );
-
-            const scrollLeft = () => {
-                var currentScrollPosition = $('.portfolio-slider').scrollLeft();
-                var elementWidth = $('.card').outerWidth(true); 
-                var newScrollPosition = currentScrollPosition - elementWidth;
-                $('.portfolio-slider').stop().animate({
-                    scrollLeft: newScrollPosition
-                }, 300);
-            }
-
-            const scrollRight = () => {
-                var currentScrollPosition = $('.portfolio-slider').scrollLeft();
-                var elementWidth = $('.card').outerWidth(true); 
-                var newScrollPosition = currentScrollPosition + elementWidth;
-                $('.portfolio-slider').stop().animate({
-                    scrollLeft: newScrollPosition
-                }, 300);
-            }
-
-            leftArrow.on('click', scrollLeft);
-
-            rightArrow.on('click', scrollRight);
+        const scrollLeft = () => {
+            var currentScrollPosition = $('.portfolio-slider').scrollLeft();
+            var elementWidth = $('.card').outerWidth(true); 
+            var newScrollPosition = currentScrollPosition - elementWidth;
+            $('.portfolio-slider').stop().animate({
+                scrollLeft: newScrollPosition
+            }, 300);
         }
-        
-    scrollStuff();
+
+        const scrollRight = () => {
+            var currentScrollPosition = $('.portfolio-slider').scrollLeft();
+            var elementWidth = $('.card').outerWidth(true); 
+            var newScrollPosition = currentScrollPosition + elementWidth;
+            $('.portfolio-slider').stop().animate({
+                scrollLeft: newScrollPosition
+            }, 300);
+        }
+
+        leftArrow.on('click', scrollLeft);
+
+        rightArrow.on('click', scrollRight);
+    }
+    
+scrollStuff();
 
       window.requestAnimationFrame(parallaxInit);
 
       swup.on('contentReplaced', function(){
         window.requestAnimationFrame(parallaxInit);
+
         scrollStuff();
       });
     </script>
-
-    
 </body>
 </html>

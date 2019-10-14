@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url(../node_modules/normalize.css/normalize.css);
 @import url("https://fonts.googleapis.com/css?family=Roboto+Slab:400,700|Kelly+Slab&display=swap");
 html, body {
@@ -251,7 +252,9 @@ a {
       margin-right: -25vw;
       width: calc(100% + 50vw); } }
   .portfolio-slider a {
-    background-image: none; }
+    background-image: none;
+    padding: 0;
+    margin: 0; }
     .portfolio-slider a:hover .image-background {
       border-width: 15px; }
   .portfolio-slider .portfolio-padding {
@@ -477,4 +480,85 @@ html.is-rendering .transition-expand span {
     opacity: 1; }
   100% {
     opacity: 1; } }
+
+input, select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  padding: 0 0.5em;
+  line-height: 1.65em;
+  font-weight: 500;
+  background: none;
+  background-repeat: no-repeat;
+  background-size: 100% 0.2em;
+  background-position: 0 103%;
+  background-image: -webkit-gradient(linear, left top, right top, from(#61f330), to(#54ffe5));
+  background-image: linear-gradient(90deg, #61f330 0%, #54ffe5 100%);
+  border-radius: 0;
+  color: #fbf500;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  display: inline-block;
+  width: 10em; }
+  input:hover, select:hover {
+    background-color: #ff1361;
+    background-image: -webkit-gradient(linear, left top, right top, from(#ff7e00), to(#61f330));
+    background-image: linear-gradient(90deg, #ff7e00 0%, #61f330 100%); }
+  input:not(:placeholder-shown) + span, select:not(:placeholder-shown) + span {
+    color: #fbf500;
+    -webkit-transform: translateY(-26px) scale(0.75);
+            transform: translateY(-26px) scale(0.75); }
+  input::-webkit-input-placeholder, select::-webkit-input-placeholder {
+    color: #ff7e00; }
+  input:-ms-input-placeholder, select:-ms-input-placeholder {
+    color: #ff7e00; }
+  input::-ms-input-placeholder, select::-ms-input-placeholder {
+    color: #ff7e00; }
+  input::placeholder, select::placeholder {
+    color: #ff7e00; }
+  input:focus, select:focus {
+    background-color: #44107a;
+    outline: none; }
+    input:focus + span, select:focus + span {
+      color: #fbf500;
+      -webkit-transform: translateY(-100%) scale(0.75);
+              transform: translateY(-100%) scale(0.75); }
+      input:focus + span + .border, select:focus + span + .border {
+        -webkit-transform: scaleX(1);
+                transform: scaleX(1); }
+
+.inp {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  line-height: 1.65em; }
+  .inp .label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 1.65em;
+    line-height: 1.65em;
+    color: #fbf500;
+    font-weight: 500;
+    -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease; }
+
+select {
+  position: relative;
+  padding-right: 2em; }
+  select:after {
+    width: 20px;
+    height: 100%;
+    position: absolute;
+    content: '↓';
+    top: 50%;
+    right: 0.5em;
+    -webkit-transform: translate(0, -50%);
+            transform: translate(0, -50%);
+    z-index: 5; }
 /*# sourceMappingURL=main.css.map */
