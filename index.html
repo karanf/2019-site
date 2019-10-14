@@ -17,11 +17,11 @@
             <img src="img/k-logo.svg" alt="" class="site-logo">
         </div>
     </header>
-    <div class="page-container" id="swup" class="transition-fade">
+    <div class="page-container transition-fade" id="swup">
       <div id="about-me" class="content-area">
           <div class="container">
               <div class="parallax-container">
-                <div class="parallax-element" data-depth="0.2">
+                <div class="section-header parallax-element" data-depth="0.2">
                   <h1 class="transition-expand"><span>About Me</span></h1>
                 </div>
               </div>
@@ -38,6 +38,10 @@
     </div>
     
     <script type="module">
+            var mobileDevice;
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                mobileDevice = true;
+            }
 
             import {
                 Polyline, Renderer, Transform, Geometry, Program, Mesh, Vec3, Vec2, Color,
@@ -126,13 +130,13 @@
                     // Store a few values for each lines' randomised spring movement
                     const line = {
                         spring: random(0.03, 0.06),
-                        friction: random(0.7, 0.95),
+                        friction: random(0.7, 0.85),
                         mouseVelocity: new Vec3(),
                         mouseOffset: new Vec3(random(-1, 1) * 0.01),
                     };
     
                     // Create an array of Vec3s (eg [[0, 0, 0], ...])
-                    const count = 25;
+                    const count = 22;
                     const points = line.points = [];
                     for (let i = 0; i < count; i++) points.push(new Vec3());
     
@@ -204,8 +208,11 @@
                         }
                         line.polyline.updateGeometry();
                     });
-    
-                    renderer.render({scene});
+
+                    if (!mobileDevice) {
+                        renderer.render({scene});
+                    }
+                    
                 }
             }
     
@@ -239,8 +246,10 @@
                     divisor = 20;
                 } else if (window.innerWidth <= 1200 ) {
                     divisor = 35;
-                } else {
-                    divisor = 60;
+                } else if (window.innerWidth <= 1920 ) {
+                    divisor = 80;
+                }else {
+                    divisor = 120;
                 }
             }
 
@@ -370,21 +379,52 @@
     </script>
 
     <script>
-        const swup = new Swup();
+      const swup = new Swup();
 
-        var parallaxInit = function(){
-          var sceneElements = document.querySelectorAll('.parallax-container');
-          var parallaxScenes = [];
-          for (var i = 0; i < sceneElements.length; i++) {
-              parallaxScenes.push(new Parallax(sceneElements[i]))
-          };
+      var parallaxInit = function(){
+        var sceneElements = document.querySelectorAll('.parallax-container');
+        var parallaxScenes = [];
+        for (var i = 0; i < sceneElements.length; i++) {
+            parallaxScenes.push(new Parallax(sceneElements[i]))
         };
-  
-        parallaxInit();
-  
-        swup.on('contentReplaced', function(){
-          parallaxInit();
-        });
+      };
+
+      const scrollStuff = () => {
+        var leftArrow = $('.left-arrow');
+        var rightArrow = $('.right-arrow');
+
+        const scrollLeft = () => {
+            var currentScrollPosition = $('.portfolio-slider').scrollLeft();
+            var elementWidth = $('.card').outerWidth(true); 
+            var newScrollPosition = currentScrollPosition - elementWidth;
+            $('.portfolio-slider').stop().animate({
+                scrollLeft: newScrollPosition
+            }, 300);
+        }
+
+        const scrollRight = () => {
+            var currentScrollPosition = $('.portfolio-slider').scrollLeft();
+            var elementWidth = $('.card').outerWidth(true); 
+            var newScrollPosition = currentScrollPosition + elementWidth;
+            $('.portfolio-slider').stop().animate({
+                scrollLeft: newScrollPosition
+            }, 300);
+        }
+
+        leftArrow.on('click', scrollLeft);
+
+        rightArrow.on('click', scrollRight);
+    }
+    
+scrollStuff();
+
+      window.requestAnimationFrame(parallaxInit);
+
+      swup.on('contentReplaced', function(){
+        window.requestAnimationFrame(parallaxInit);
+
+        scrollStuff();
+      });
     </script>
 </body>
 </html>

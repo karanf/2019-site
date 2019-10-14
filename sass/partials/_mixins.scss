@@ -1,22 +1,22 @@
 @mixin breakpoint-down($class) {
     @if $class == xs {
-        @media (max-width: $phone-max) {
+        @media screen and (max-width: $phone-max) {
             @content;
         }
     } @else if $class == sm {
-        @media (max-width: $tablet-max) {
+        @media screen and (max-width: $tablet-max) {
             @content;
         }
     } @else if $class == md {
-        @media (max-width: $small-desktop-max) {
+        @media screen and (max-width: $small-desktop-max) {
             @content;
         }
     } @else if $class == rg {
-        @media (max-width: $desktop-max) {
+        @media screen and (max-width: $desktop-max) {
             @content;
         }
     } @else if $class == lg {
-        @media (max-width: $large-desktop-max) {
+        @media screen and (max-width: $large-desktop-max) {
             @content;
         }
     } @else {
@@ -26,23 +26,23 @@
 
 @mixin breakpoint-up($class) {
     @if $class == sm {
-        @media (min-width: $tablet) {
+        @media screen and (min-width: $tablet) {
             @content;
         }
     } @else if $class == md {
-        @media (min-width: $small-desktop) {
+        @media screen and (min-width: $small-desktop) {
             @content;
         }
     } @else if $class == rg {
-        @media (min-width: $desktop-max) {
+        @media screen and (min-width: $desktop-max) {
             @content;
         }
     } @else if $class == lg {
-        @media (min-width: $large-desktop) {
+        @media screen and (min-width: $large-desktop) {
             @content;
         }
     } @else if $class == xl {
-        @media (min-width: $xl-desktop) {
+        @media screen and (min-width: $xl-desktop) {
             @content;
         }
     } @else {

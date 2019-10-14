@@ -13,11 +13,11 @@ html, body {
 
 ::selection {
     background: $neon-green;
-    color: black;
+    color: white;
 }
 ::-moz-selection {
     background: $neon-green;
-    color: black;
+    color: white;
 }
 
 canvas {
@@ -51,7 +51,16 @@ body {
     top: 50%;
     left: 0;
     transform: translate(0, -50%);
-    padding: 0 25%;
+    padding: 0 10vw;
+    overflow-x: hidden;
+
+    @media screen and (min-width: $small-desktop) {
+        padding: 0 15vw;
+    }
+
+    @media screen and (min-width: $large-desktop) {
+        padding: 0 25vw;
+    }
 }
 
 canvas {
@@ -59,4 +68,34 @@ canvas {
     left: 0;
     top: 0;
     z-index: -1;
+}
+
+.project-container {
+    margin-left: -7.5vw;
+    margin-right: -7.5vw;
+    padding: 50px 10vw;
+    width: calc(100% + 15vw);
+    height: 60vh;
+    overflow: scroll;
+    border-top: 5px solid $neon-hot-pink;
+    border-bottom: 5px solid $neon-hot-pink;
+    scrollbar-width: none; 
+
+    &::-webkit-scrollbar { 
+    display: none;
+    }
+
+    @media screen and (min-width: $small-desktop) {  
+        margin-left: -12.5vw;
+        margin-right: -12.5vw;
+        width: calc(100% + 25vw);
+        padding: 50px 15vw;
+      }
+
+    @media screen and (min-width: $large-desktop) {
+        margin-left: -22.5vw;
+        margin-right: -22.5vw;
+        width: calc(100% + 45vw);
+        padding: 50px 25vw;
+      }
 }

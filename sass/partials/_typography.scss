@@ -10,35 +10,55 @@ h6 {
     text-transform: uppercase;
     line-height: 1.2em;
     margin-bottom: 0.2em;
-    margin-top: 0.75em;
+    margin-top: 0.2em;
 }
 
 h1 {
-    font-size: 5rem;
+    font-size: 2rem;
     color: $neon-yellow;
     text-shadow: -3px 3px 0 $neon-violet, -6px 6px 0 $neon-magenta;
     transition: all 0.3s ease-out;
     z-index: 10;
     display: inline-block;
 
-    @include breakpoint-down(rg) {
-        font-size: 3rem;
+    @media screen and (min-width: $tablet) {
+        font-size: 3.5rem;
     }
 
-    @include breakpoint-down(md) {
-        font-size: 2.5rem;
+    @media screen and (min-width: $small-desktop) {
+        font-size: 4rem;
     }
 
-    @include breakpoint-down(sm) {
-        font-size: 2rem;
+    @media screen and (min-width: $desktop) {
+        font-size: 4.5rem;
+    }
+
+    @media screen and (min-width: $large-desktop) {
+        font-size: 4.75rem;
+    }
+
+    @media screen and (min-width: $xl-desktop) {
+        font-size: 5rem;
     }
 }
 
 body {
     font-family: "Roboto Slab", Helvetica, Arial, sans-serif;
     color: black;
-    font-size: 2rem;
+    font-size: 1rem;
     line-height: 1.65em;
+
+    @media screen and (min-width: $tablet) {
+        font-size: 1.5rem;
+    }
+
+    @media screen and (min-width: $small-desktop) {
+        font-size: 1.75rem;
+    }
+
+    @media screen and (min-width: $large-desktop) {
+        font-size: 2rem;
+    }
 }
 
 p {
@@ -51,7 +71,7 @@ p {
     color: white;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
-    padding: 0 0.5rem;
+    padding: 0 0.5em;
 
     a {
         color: $neon-purple;
@@ -71,19 +91,19 @@ p {
     &.with-background {
         color: black;
         background-color: $neon-yellow;
-        text-shadow: 0 0 5px rgba(0, 0, 0, 0);
+        text-shadow: 0 0 0.33em rgba(0, 0, 0, 0);
 
         &:hover {
             color: $neon-yellow;
             background-color: transparent;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+            text-shadow: 0 0 0.33em rgba(0, 0, 0, 0.25);
         }
     }
 }
 
 a {
     color: $neon-yellow;
-    padding: 0 10px 5px;
+    padding: 0 0.3125em 0.15625em;
     background-image: linear-gradient(90deg, $neon-green 0%, $neon-blue 100%);
     background-repeat: no-repeat;
     text-decoration: none;

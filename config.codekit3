@@ -231,6 +231,13 @@
 		"oAP": "\/portfolio.html",
 		"oF": 0
 		},
+	"\/projects\/1.html": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/projects\/1.html",
+		"oF": 0
+		},
 	"\/sass\/main.scss": {
 		"aP": 1,
 		"bl": 1,
