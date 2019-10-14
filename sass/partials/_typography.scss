@@ -101,7 +101,18 @@ p {
     }
 }
 
-a {
+button {
+    appearance: none;
+    -moz-appearance: none;
+    border: none;
+    background: none;
+    line-height: 1.65em;
+    padding: 0;
+    margin: 0;
+}
+
+a,
+button {
     color: $neon-yellow;
     padding: 0 0.3125em 0.15625em;
     background-image: linear-gradient(90deg, $neon-green 0%, $neon-blue 100%);

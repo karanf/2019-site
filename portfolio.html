@@ -14,7 +14,7 @@
 <body>
     <header>
         <div class="logo-area">
-            <img src="img/k-logo.svg" alt="" class="site-logo">
+            <a href="/index.html"><img src="img/k-logo.svg" alt="" class="site-logo"></a>
         </div>
     </header>
     <div class="page-container transition-fade" id="swup">
@@ -487,6 +487,18 @@
         window.requestAnimationFrame(parallaxInit);
         scrollStuff();
       });
+    </script>
+
+    <script>
+        //refresh page on browser resize
+$(window).bind('resize', function(e)
+{
+  if (window.RT) clearTimeout(window.RT);
+  window.RT = setTimeout(function()
+  {
+    this.location.reload(false); /* false to get page from cache */
+  }, 200);
+});
     </script>
 
     

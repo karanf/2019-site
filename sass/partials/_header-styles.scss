@@ -13,8 +13,12 @@ header {
         padding: 2.5rem;
     }
 
-    .logo-area {
+    a {
+        background: none;
+        background-image: none;
+    }
 
+    .logo-area {
         .site-logo {
             width: 45px;
             height: auto;
@@ -22,7 +26,7 @@ header {
             @media screen and (min-width: $tablet) {
                 width: 60px;
             }
-        
+
             @media screen and (min-width: $small-desktop) {
                 width: 75px;
             }
