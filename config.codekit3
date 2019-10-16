@@ -57,6 +57,16 @@
 		"oAP": "\/fonts\/KayakVF.ttf",
 		"oF": 0
 		},
+	"\/img\/chevron-arrow-down.svg": {
+		"ft": 2097152,
+		"miP": 0,
+		"oA": 2,
+		"oAP": "\/img\/chevron-arrow-down.svg",
+		"oF": 0,
+		"opt": 0,
+		"plM": 3758088159,
+		"prP": 0
+		},
 	"\/img\/k-logo-compressed.svg": {
 		"ft": 2097152,
 		"miP": 0,
@@ -534,6 +544,13 @@
 		"opt": 0,
 		"oT": 1,
 		"q": 100
+		},
+	"\/validation.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/validation.php",
+		"oF": 0
 		}
 	},
 "hooks": [

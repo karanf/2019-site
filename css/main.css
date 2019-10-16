@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @import url(../node_modules/normalize.css/normalize.css);
 @import url("https://fonts.googleapis.com/css?family=Roboto+Slab:400,700|Kelly+Slab&display=swap");
 html, body {
@@ -178,6 +177,10 @@ p {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
   padding: 0 0.5em; }
+  .selected.error {
+    background-color: #ff003c; }
+  .selected.success {
+    background-color: #61f330; }
   .selected a {
     color: #9833f5;
     background-color: black; }
@@ -203,8 +206,8 @@ button {
   border: none;
   background: none;
   line-height: 1.65em;
-  padding: 0;
-  margin: 0; }
+  margin: 0;
+  padding-bottom: 0 !important; }
 
 a,
 button {
@@ -504,6 +507,7 @@ input, select {
   font-family: inherit;
   padding: 0 0.5em;
   line-height: 1.65em;
+  height: 1.65em;
   font-weight: 500;
   background: none;
   background-repeat: no-repeat;
@@ -521,39 +525,28 @@ input, select {
     background-color: #ff1361;
     background-image: -webkit-gradient(linear, left top, right top, from(#ff7e00), to(#61f330));
     background-image: linear-gradient(90deg, #ff7e00 0%, #61f330 100%); }
-  input:not(:placeholder-shown) + span, select:not(:placeholder-shown) + span {
-    color: #fbf500;
-    -webkit-transform: translateY(-26px) scale(0.75);
-            transform: translateY(-26px) scale(0.75); }
   input::-webkit-input-placeholder, select::-webkit-input-placeholder {
-    color: #ff7e00; }
+    color: #fbf500; }
   input:-ms-input-placeholder, select:-ms-input-placeholder {
-    color: #ff7e00; }
+    color: #fbf500; }
   input::-ms-input-placeholder, select::-ms-input-placeholder {
-    color: #ff7e00; }
+    color: #fbf500; }
   input::placeholder, select::placeholder {
-    color: #ff7e00; }
+    color: #fbf500; }
   input:focus, select:focus {
     background-color: #44107a;
     outline: none; }
-    input:focus + span, select:focus + span {
-      color: #fbf500;
-      -webkit-transform: translateY(-100%) scale(0.75);
-              transform: translateY(-100%) scale(0.75); }
-      input:focus + span + .border, select:focus + span + .border {
-        -webkit-transform: scaleX(1);
-                transform: scaleX(1); }
 
 .inp {
   position: relative;
   margin: auto;
   width: 100%;
-  line-height: 1.65em; }
+  line-height: 1.65em;
+  height: 1.65; }
   .inp .label {
     position: absolute;
     top: 50%;
     left: 0;
-    height: 1.65em;
     line-height: 1.65em;
     color: #fbf500;
     font-weight: 500;
@@ -563,16 +556,10 @@ input, select {
     transition: all .2s ease; }
 
 select {
-  position: relative;
-  padding-right: 2em; }
-  select:after {
-    width: 20px;
-    height: 100%;
-    position: absolute;
-    content: '↓';
-    top: 50%;
-    right: 0.5em;
-    -webkit-transform: translate(0, -50%);
-            transform: translate(0, -50%);
-    z-index: 5; }
+  background-image: url(../img/chevron-arrow-down.svg);
+  background-position: 95% center;
+  background-repeat: no-repeat;
+  background-size: 6%; }
+  select:hover {
+    background-image: url(../img/chevron-arrow-down.svg); }
 /*# sourceMappingURL=main.css.map */

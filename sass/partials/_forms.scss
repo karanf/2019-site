@@ -6,7 +6,7 @@ input, select {
     font-family: inherit;
     padding: 0 0.5em;
     line-height: 1.65em;
-    // height: 48px;
+    height: 1.65em;
     font-weight: 500;
     background: none;
     background-repeat: no-repeat;
@@ -32,29 +32,13 @@ input, select {
         );
     }
 
-    &:not(:placeholder-shown) {
-        +span {
-            color: $neon-yellow;
-            transform: translateY(-26px) scale(.75);
-        }
-    }
-
-    &::placeholder, {
-        color: $neon-orange;
+    &::placeholder {
+        color: $neon-yellow;
     }
 
     &:focus {
         background-color: $neon-violet;
         outline: none;
-
-        +span {
-            color: $neon-yellow;
-            transform: translateY(-100%) scale(.75);
-
-            +.border {
-                transform: scaleX(1);
-            }
-        }
     }
 }
 
@@ -63,12 +47,12 @@ input, select {
   margin: auto;
   width: 100%;
   line-height: 1.65em;
+  height: 1.65;
   //transform: rotateX(45deg) rotateY(-10deg) rotate(25deg) scale(2)
   .label {
     position: absolute;
     top: 50%;
     left: 0;
-    height: 1.65em;
     line-height: 1.65em;
     color: $neon-yellow;
     font-weight: 500;
@@ -78,17 +62,12 @@ input, select {
 }
 
 select {
-    position: relative;
-    padding-right: 2em;
+    background-image: url(../img/chevron-arrow-down.svg);
+    background-position: 95% center;
+    background-repeat: no-repeat;
+    background-size: 6%;
 
-    &:after {
-        width: 20px;
-        height: 100%;
-        position: absolute;
-        content: '↓';
-        top: 50%;
-        right: 0.5em;
-        transform: translate(0, -50%);
-        z-index: 5;
+    &:hover {
+        background-image: url(../img/chevron-arrow-down.svg);
     }
 }
