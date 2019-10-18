@@ -29,7 +29,7 @@
               <div class="parallax-container" data-pointer-events="true">
                 <div class="parallax-element" data-depth="0.5">
                     <div class="transition-slide-right">
-                        <form method="post" action="contact_form.php">
+                        <form method="post" action="contact.php">
                             <span class="selected">Hi Karan, I'm<sup>*</sup> </span><input type="text" placeholder="Craven Bacon" name="name" value=""></input><span class="selected">. I am interested in your<sup>*</sup> </span><select><option value="UI / UX">UI / UX Design</option><option value="Web Design">Web Design</option><option value="Frontend">Frontend Dev</option><option value="Custom">Custom project</option></select><span class="selected"> services. Please contact me on my email<sup>*</sup>:</span><input type="text" name="email" value="" placeholder="bacon@craven.nz"></input><span class="selected">, or call me on:</span><input type="text" placeholder="0214537869"></input>.<br />
                             <span class="selected error"><?php echo $nameError;?><?php echo $emailError;?></span>
                             <button class="purple-link with-background" type="submit" name="submit" value="Submit">Submit &rArr;</button><br>

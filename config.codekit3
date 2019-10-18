@@ -16,11 +16,11 @@
 		"oAP": "\/.gitignore",
 		"oF": 0
 		},
-	"\/contact.html": {
+	"\/contact.php": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 0,
-		"oAP": "\/contact.html",
+		"oAP": "\/contact.php",
 		"oF": 0
 		},
 	"\/css\/main.css": {
@@ -544,6 +544,13 @@
 		"opt": 0,
 		"oT": 1,
 		"q": 100
+		},
+	"\/validation.php": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "\/validation.php",
+		"oF": 0
 		}
 	},
 "hooks": [
