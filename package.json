@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "normalize.css": "^8.0.1",
-    "three": "^0.108.0",
+    "three": "^0.137.0",
     "three-js": "^79.0.0",
     "glslify": "^7.0.0"
   }
